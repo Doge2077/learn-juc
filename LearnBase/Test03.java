@@ -2,23 +2,29 @@ public class Test03 {
 
     static int num;
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws InterruptedException {
         Object lock = new Object();
-        new Thread(() -> {
+        Thread thread1 = new Thread(() -> {
             synchronized (lock) {
-                for (int i = 1; i <= 100000; i ++) {
+                for (int i = 1; i <= 1000000; i ++) {
                     num ++;
                 }
             };
-        }).start();
+        });
 
-        new Thread(() -> {
+        Thread thread2 = new Thread(() -> {
             synchronized (lock) {
-                for (int i = 1; i <= 100000; i ++) {
+                for (int i = 1; i <= 1000000; i ++) {
                     num ++;
                 }
             };
-        }).start();
+        });
+
+        thread1.start();
+        thread2.start();
+
+        thread1.join();
+        thread2.join();
 
         System.out.println(num);
     }
